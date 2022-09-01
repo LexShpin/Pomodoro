@@ -54,6 +54,7 @@ class TimerViewController: UIViewController {
     var pomodoroBrain = PomodoroBrain()
     
     var isStartButtonPressed: Bool = false
+    var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,12 +139,16 @@ class TimerViewController: UIViewController {
         if (!isStartButtonPressed) {
             startButton.setTitle("STOP", for: .normal)
             isStartButtonPressed = true
-            pomodoroBrain.startTimer()
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(startTimer), userInfo: nil, repeats: true)
         } else {
             startButton.setTitle("START", for: .normal)
             isStartButtonPressed = false
-            pomodoroBrain.stopTimer()
+//            pomodoroBrain.stopTimer()
         }
+    }
+    
+    @objc func startTimer() {
+        pomodoroBrain.startTimer()
     }
     
 }
