@@ -11,17 +11,14 @@ import UIKit
 struct PomodoroBrain {
     
     var pomodoroTime: Int = 0
+    var breakTime: Int = 5
     var timePassed: Int = 0
     
     mutating func setPomodoroTime(time: Int) {
-        pomodoroTime = time * 60
+        pomodoroTime = time 
     }
     
     func getPomodoroTime() -> Int {
         return pomodoroTime
-    }
-    
-    func stopTimer() {
-        
     }
 }

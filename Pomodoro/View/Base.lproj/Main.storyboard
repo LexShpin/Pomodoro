@@ -120,12 +120,20 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Focus time!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oho-qX-nCD">
+                                <rect key="frame" x="6" y="133" width="381" height="151"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.1764705926" green="0.1764705926" blue="0.1764705926" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>
                     <connections>
                         <outlet property="fiveMinuteButton" destination="ShY-R3-alo" id="Yqj-aK-FZw"/>
+                        <outlet property="focusOrBreakLabel" destination="oho-qX-nCD" id="wMi-fI-s9f"/>
                         <outlet property="startButton" destination="zEH-Fq-tL7" id="ttn-6J-Ijm"/>
                         <outlet property="tenMinuteButton" destination="0Kv-va-CIL" id="TA5-H2-nE7"/>
                         <outlet property="timeLabel" destination="ZKh-ds-9Es" id="iyz-jr-vpk"/>

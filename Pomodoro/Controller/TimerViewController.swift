@@ -50,14 +50,19 @@ class TimerViewController: UIViewController {
     @IBOutlet var twentyFiveMinuteButton: UIButton!
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var startButton: UIButton!
+    @IBOutlet var focusOrBreakLabel: UILabel!
     
     var pomodoroBrain = PomodoroBrain()
     
     var isStartButtonPressed: Bool = false
     var timer = Timer()
     
+    var selectedLabelTime: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        timeLabel.adjustsFontSizeToFitWidth = true
         
         view.addSubview(progressView)
         progressView.center = view.center
@@ -97,6 +102,7 @@ class TimerViewController: UIViewController {
     }
     
     @IBAction func selectTimer(_ sender: UIButton) {
+        
         switch sender {
         case fiveMinuteButton:
             fiveMinuteButton.isSelected = true
@@ -105,7 +111,8 @@ class TimerViewController: UIViewController {
             fiveMinuteButton.backgroundColor = hexStringToUIColor(hex: "#707CF6")
             tenMinuteButton.backgroundColor = .clear
             twentyFiveMinuteButton.backgroundColor = .clear
-            pomodoroBrain.setPomodoroTime(time: Int((fiveMinuteButton.titleLabel?.text)!)!)
+            pomodoroBrain.setPomodoroTime(time: Int((fiveMinuteButton.titleLabel?.text)!)! * 60)
+            selectedLabelTime = Int((fiveMinuteButton.titleLabel?.text!)!)!
         case tenMinuteButton:
             fiveMinuteButton.isSelected = false
             tenMinuteButton.isSelected = true
@@ -113,7 +120,8 @@ class TimerViewController: UIViewController {
             fiveMinuteButton.backgroundColor = .clear
             tenMinuteButton.backgroundColor = hexStringToUIColor(hex: "#707CF6")
             twentyFiveMinuteButton.backgroundColor = .clear
-            pomodoroBrain.setPomodoroTime(time: Int((tenMinuteButton.titleLabel?.text)!)!)
+            pomodoroBrain.setPomodoroTime(time: Int((tenMinuteButton.titleLabel?.text)!)! * 60)
+            selectedLabelTime = Int((tenMinuteButton.titleLabel?.text!)!)!
         case twentyFiveMinuteButton:
             fiveMinuteButton.isSelected = false
             tenMinuteButton.isSelected = false
@@ -121,7 +129,8 @@ class TimerViewController: UIViewController {
             fiveMinuteButton.backgroundColor = .clear
             tenMinuteButton.backgroundColor = .clear
             twentyFiveMinuteButton.backgroundColor = hexStringToUIColor(hex: "#707CF6")
-            pomodoroBrain.setPomodoroTime(time: Int((twentyFiveMinuteButton.titleLabel?.text)!)!)
+            pomodoroBrain.setPomodoroTime(time: Int((twentyFiveMinuteButton.titleLabel?.text)!)! * 60)
+            selectedLabelTime = Int((twentyFiveMinuteButton.titleLabel?.text!)!)!
         default:
             return
         }
@@ -140,6 +149,10 @@ class TimerViewController: UIViewController {
         timer.invalidate()
         pomodoroBrain.timePassed = 0
         
+        setTimerTime()
+        
+        timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
+        
         if (!isStartButtonPressed) {
             startButton.setTitle("STOP", for: .normal)
             isStartButtonPressed = true
@@ -148,13 +161,7 @@ class TimerViewController: UIViewController {
         } else {
             startButton.setTitle("START", for: .normal)
             isStartButtonPressed = false
-            if (fiveMinuteButton.isSelected) {
-                pomodoroBrain.setPomodoroTime(time: Int((fiveMinuteButton.titleLabel?.text)!)!)
-            } else if (tenMinuteButton.isSelected) {
-                pomodoroBrain.setPomodoroTime(time: Int((tenMinuteButton.titleLabel?.text)!)!)
-            } else {
-                pomodoroBrain.setPomodoroTime(time: Int((twentyFiveMinuteButton.titleLabel?.text)!)!)
-            }
+            setTimerTime()
             
             timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
         }
@@ -162,15 +169,23 @@ class TimerViewController: UIViewController {
     
     @objc func startTimer() {
         
-        if (pomodoroBrain.timePassed < pomodoroBrain.pomodoroTime) {
+        focusOrBreakLabel.text = "Focus time!"
+        
+        if (pomodoroBrain.pomodoroTime > 0) {
+            pomodoroBrain.pomodoroTime -= 1
             pomodoroBrain.timePassed += 1
+            progressView.progress = Float(pomodoroBrain.timePassed) / Float(selectedLabelTime)
+            timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
         } else {
             timer.invalidate()
+            progressView.progress = 0.0
+            timeLabel.text = String(selectedLabelTime)
+            focusOrBreakLabel.text = "Take a break of any time you want and start over!"
+            timeLabel.text = convertSecondsToTime(timeInSeconds: selectedLabelTime * 60)
+            startButton.titleLabel?.text = "START"
+            isStartButtonPressed = false
         }
         
-        pomodoroBrain.pomodoroTime -= 1
-        timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
-        progressView.progress = Float(pomodoroBrain.timePassed) / Float(pomodoroBrain.pomodoroTime)
     }
     
     func convertSecondsToTime(timeInSeconds: Int) -> String {
@@ -180,5 +195,16 @@ class TimerViewController: UIViewController {
         return String(format: "%02i:%02i", minutes, seconds)
     }
     
+    func setTimerTime() {
+        if (fiveMinuteButton.isSelected) {
+            pomodoroBrain.setPomodoroTime(time: Int((fiveMinuteButton.titleLabel?.text)!)!)
+        } else if (tenMinuteButton.isSelected) {
+            pomodoroBrain.setPomodoroTime(time: Int((tenMinuteButton.titleLabel?.text)!)!)
+        } else {
+            pomodoroBrain.setPomodoroTime(time: Int((twentyFiveMinuteButton.titleLabel?.text)!)!)
+        }
+    }
+    
 }
+
 
