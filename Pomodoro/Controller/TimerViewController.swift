@@ -63,7 +63,7 @@ class TimerViewController: UIViewController {
         progressView.center = view.center
         progressView.progressColor = hexStringToUIColor(hex: "#707CF6")
         progressView.trackColor = .lightGray
-        progressView.progress = 0.1
+        progressView.progress = 0.0
         
         twentyFiveMinuteButton.isSelected = true
         
@@ -127,28 +127,57 @@ class TimerViewController: UIViewController {
         }
         
         if (fiveMinuteButton.isSelected) {
-            timeLabel.text = "0\(pomodoroBrain.pomodoroTime):00"
+            timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
         } else {
-            timeLabel.text = "\(pomodoroBrain.pomodoroTime):00"
+            timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
         }
         
     }
     
     
     @IBAction func startButtonPressed(_ sender: UIButton) {
+        
+        timer.invalidate()
+        pomodoroBrain.timePassed = 0
+        
         if (!isStartButtonPressed) {
             startButton.setTitle("STOP", for: .normal)
             isStartButtonPressed = true
             timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(startTimer), userInfo: nil, repeats: true)
+            timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
         } else {
             startButton.setTitle("START", for: .normal)
             isStartButtonPressed = false
-//            pomodoroBrain.stopTimer()
+            if (fiveMinuteButton.isSelected) {
+                pomodoroBrain.setPomodoroTime(time: Int((fiveMinuteButton.titleLabel?.text)!)!)
+            } else if (tenMinuteButton.isSelected) {
+                pomodoroBrain.setPomodoroTime(time: Int((tenMinuteButton.titleLabel?.text)!)!)
+            } else {
+                pomodoroBrain.setPomodoroTime(time: Int((twentyFiveMinuteButton.titleLabel?.text)!)!)
+            }
+            
+            timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
         }
     }
     
     @objc func startTimer() {
-        pomodoroBrain.startTimer()
+        
+        if (pomodoroBrain.timePassed < pomodoroBrain.pomodoroTime) {
+            pomodoroBrain.timePassed += 1
+        } else {
+            timer.invalidate()
+        }
+        
+        pomodoroBrain.pomodoroTime -= 1
+        timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
+        progressView.progress = Float(pomodoroBrain.timePassed) / Float(pomodoroBrain.pomodoroTime)
+    }
+    
+    func convertSecondsToTime(timeInSeconds: Int) -> String {
+        let minutes = timeInSeconds / 60
+        let seconds = timeInSeconds % 60
+        
+        return String(format: "%02i:%02i", minutes, seconds)
     }
     
 }

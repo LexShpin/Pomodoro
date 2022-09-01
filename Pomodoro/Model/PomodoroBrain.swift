@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct PomodoroBrain {
     
@@ -13,20 +14,11 @@ struct PomodoroBrain {
     var timePassed: Int = 0
     
     mutating func setPomodoroTime(time: Int) {
-        pomodoroTime = time
+        pomodoroTime = time * 60
     }
     
     func getPomodoroTime() -> Int {
         return pomodoroTime
-    }
-    
-    mutating func startTimer() {
-        if (timePassed < pomodoroTime) {
-            timePassed += 1
-        }
-        
-        pomodoroTime = pomodoroTime - timePassed
-        print(pomodoroTime)
     }
     
     func stopTimer() {
