@@ -162,6 +162,7 @@ class TimerViewController: UIViewController {
             startButton.setTitle("START", for: .normal)
             isStartButtonPressed = false
             setTimerTime()
+            progressView.progress = 0.0
             
             timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
         }
@@ -174,7 +175,7 @@ class TimerViewController: UIViewController {
         if (pomodoroBrain.pomodoroTime > 0) {
             pomodoroBrain.pomodoroTime -= 1
             pomodoroBrain.timePassed += 1
-            progressView.progress = Float(pomodoroBrain.timePassed) / Float(selectedLabelTime)
+            progressView.progress = Float(pomodoroBrain.timePassed) / Float(selectedLabelTime * 60)
             timeLabel.text = convertSecondsToTime(timeInSeconds: pomodoroBrain.pomodoroTime)
         } else {
             timer.invalidate()
@@ -182,7 +183,7 @@ class TimerViewController: UIViewController {
             timeLabel.text = String(selectedLabelTime)
             focusOrBreakLabel.text = "Take a break of any time you want and start over!"
             timeLabel.text = convertSecondsToTime(timeInSeconds: selectedLabelTime * 60)
-            startButton.titleLabel?.text = "START"
+            startButton.setTitle("START", for: .normal)
             isStartButtonPressed = false
         }
         
