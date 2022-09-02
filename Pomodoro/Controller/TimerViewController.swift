@@ -111,8 +111,8 @@ class TimerViewController: UIViewController {
             fiveMinuteButton.backgroundColor = hexStringToUIColor(hex: "#707CF6")
             tenMinuteButton.backgroundColor = .clear
             twentyFiveMinuteButton.backgroundColor = .clear
-            pomodoroBrain.setPomodoroTime(time: Int((fiveMinuteButton.titleLabel?.text)!)! * 60)
-            selectedLabelTime = Int((fiveMinuteButton.titleLabel?.text!)!)!
+            pomodoroBrain.setPomodoroTime(time: Int((fiveMinuteButton.titleLabel?.text)!)!)
+            selectedLabelTime = Int((tenMinuteButton.titleLabel?.text!)!)!
         case tenMinuteButton:
             fiveMinuteButton.isSelected = false
             tenMinuteButton.isSelected = true
@@ -120,7 +120,7 @@ class TimerViewController: UIViewController {
             fiveMinuteButton.backgroundColor = .clear
             tenMinuteButton.backgroundColor = hexStringToUIColor(hex: "#707CF6")
             twentyFiveMinuteButton.backgroundColor = .clear
-            pomodoroBrain.setPomodoroTime(time: Int((tenMinuteButton.titleLabel?.text)!)! * 60)
+            pomodoroBrain.setPomodoroTime(time: Int((tenMinuteButton.titleLabel?.text)!)!)
             selectedLabelTime = Int((tenMinuteButton.titleLabel?.text!)!)!
         case twentyFiveMinuteButton:
             fiveMinuteButton.isSelected = false
@@ -129,7 +129,7 @@ class TimerViewController: UIViewController {
             fiveMinuteButton.backgroundColor = .clear
             tenMinuteButton.backgroundColor = .clear
             twentyFiveMinuteButton.backgroundColor = hexStringToUIColor(hex: "#707CF6")
-            pomodoroBrain.setPomodoroTime(time: Int((twentyFiveMinuteButton.titleLabel?.text)!)! * 60)
+            pomodoroBrain.setPomodoroTime(time: Int((twentyFiveMinuteButton.titleLabel?.text)!)!)
             selectedLabelTime = Int((twentyFiveMinuteButton.titleLabel?.text!)!)!
         default:
             return
